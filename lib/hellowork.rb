@@ -1,5 +1,6 @@
 require 'hellowork/version'
 require 'hellowork/list_page'
+require 'hellowork/detail_page'
 
 require 'mechanize'
 
@@ -96,6 +97,13 @@ module Hellowork
 
     def next?
       !!next_page_button
+    end
+
+    def fetch_detail(job_id)
+      id1, id2 = job_id.split('-')
+      url = "https://www.hellowork.go.jp/servicef/130050.do?screenId=130050&action=commonDetailInfo&kyujinNumber1=#{id1}&kyujinNumber2=#{id2}"
+      page = Mechanize.new.get url
+      DetailPage.new(body: page.body)
     end
 
     private

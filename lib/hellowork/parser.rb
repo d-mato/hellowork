@@ -43,4 +43,19 @@ module Hellowork::Parser
 
     jobs
   end
+
+  def parse_job(text)
+    doc = Nokogiri.parse(text)
+    tables = doc.css('.d-table table')
+    return nil if tables.empty?
+
+    job = {}
+    tables.each do |table|
+      table.css('tr').each do |tr|
+        job[tr.at('th').text.strip] = tr.at('td').text.strip
+      end
+    end
+
+    job
+  end
 end
